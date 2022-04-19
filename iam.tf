@@ -1,5 +1,5 @@
 resource "aws_iam_role" "eksClusterRole" {
-  name = "eksClusterRole"
+  name = "tfEKSClusterRole"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -19,6 +19,39 @@ resource "aws_iam_role" "eksClusterRole" {
 resource "aws_iam_role_policy_attachment" "eksClusterRole_AmazonEKSClusterPolicy_attachment" {
   role       = aws_iam_role.eksClusterRole.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+}
+
+resource "aws_iam_role" "eksNodeRole" {
+  name = "tfEKSNodeRole"
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "ec2.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
+
+  tags = local.common_tags
+}
+
+resource "aws_iam_role_policy_attachment" "eksNodeRole_AmazonEKSWorkerNodePolicy_attachment" {
+  role       = aws_iam_role.eksNodeRole.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "eksNodeRole_AmazonEC2ContainerRegistryReadOnlyPolicy_attachment" {
+  role       = aws_iam_role.eksNodeRole.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
+resource "aws_iam_role_policy_attachment" "eksNodeRole_AmazonEKS_CNI_Policy_attachment" {
+  role       = aws_iam_role.eksNodeRole.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
 }
 
 data "tls_certificate" "cluster" {
@@ -52,4 +85,8 @@ data "aws_iam_policy_document" "cluster_assume_role_policy" {
 
 output "oidc_provider_arn" {
   value = aws_iam_openid_connect_provider.eksCluster.arn
+}
+
+output "eksNodeRoleArn" {
+  value = aws_iam_role.eksNodeRole.arn
 }
