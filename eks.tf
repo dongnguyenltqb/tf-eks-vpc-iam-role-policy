@@ -58,18 +58,3 @@ resource "aws_eks_node_group" "t3small" {
   ]
 }
 
-output "cluster-name" {
-  value = aws_eks_cluster.cluster.name
-}
-
-output "cluster-sg" {
-  value = aws_eks_cluster.cluster.vpc_config[0].cluster_security_group_id
-}
-
-output "endpoint" {
-  value = aws_eks_cluster.cluster.endpoint
-}
-
-output "oidc" {
-  value = aws_eks_cluster.cluster.identity.0.oidc.0.issuer
-}

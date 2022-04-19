@@ -83,10 +83,3 @@ data "aws_iam_policy_document" "cluster_assume_role_policy" {
   }
 }
 
-output "oidc_provider_arn" {
-  value = aws_iam_openid_connect_provider.eksCluster.arn
-}
-
-output "eksNodeRoleArn" {
-  value = aws_iam_role.eksNodeRole.arn
-}
