@@ -8,3 +8,11 @@ include:
 - EKS cluster
 - EKS nodegroup
 - EC2 jump server
+
+variable: copy and edit `.tfvars` file
+
+run:
+
+```
+terraform apply -var-file dev.tfvar
+```
