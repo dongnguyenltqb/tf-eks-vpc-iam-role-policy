@@ -11,7 +11,9 @@ resource "aws_subnet" "tf-1a-public" {
   availability_zone       = "ap-southeast-1a"
   map_public_ip_on_launch = true
   tags = {
-    Name = "tf-1a-public"
+    Name                          = "tf-1a-public"
+    "kubernetes.io/role/elb"      = 1
+    "kubernetes.io/cluster/basic" = "owned"
   }
 }
 
@@ -22,7 +24,9 @@ resource "aws_subnet" "tf-1a-private" {
   availability_zone       = "ap-southeast-1a"
   map_public_ip_on_launch = false
   tags = {
-    Name = "tf-1a-private"
+    Name                              = "tf-1a-private"
+    "kubernetes.io/cluster/basic"     = "owned"
+    "kubernetes.io/role/internal-elb" = 1
   }
 }
 
@@ -33,7 +37,9 @@ resource "aws_subnet" "tf-1b-public" {
   availability_zone       = "ap-southeast-1b"
   map_public_ip_on_launch = true
   tags = {
-    Name = "tf-1b-public"
+    Name                          = "tf-1b-public"
+    "kubernetes.io/role/elb"      = 1
+    "kubernetes.io/cluster/basic" = "owned"
   }
 }
 
@@ -44,7 +50,9 @@ resource "aws_subnet" "tf-1b-private" {
   availability_zone       = "ap-southeast-1b"
   map_public_ip_on_launch = false
   tags = {
-    Name = "tf-1b-private"
+    Name                              = "tf-1b-private"
+    "kubernetes.io/cluster/basic"     = "owned"
+    "kubernetes.io/role/internal-elb" = 1
   }
 }
 resource "aws_subnet" "tf-1c-public" {
@@ -53,7 +61,9 @@ resource "aws_subnet" "tf-1c-public" {
   availability_zone       = "ap-southeast-1c"
   map_public_ip_on_launch = true
   tags = {
-    Name = "tf-1c-public"
+    Name                          = "tf-1c-public"
+    "kubernetes.io/role/elb"      = 1
+    "kubernetes.io/cluster/basic" = "owned"
   }
 }
 
@@ -64,7 +74,9 @@ resource "aws_subnet" "tf-1c-private" {
   availability_zone       = "ap-southeast-1c"
   map_public_ip_on_launch = false
   tags = {
-    Name = "tf-1c-private"
+    Name                              = "tf-1c-private"
+    "kubernetes.io/cluster/basic"     = "owned"
+    "kubernetes.io/role/internal-elb" = 1
   }
 }
 
