@@ -8,6 +8,7 @@ include:
 - EKS cluster
 - EKS nodegroup
 - EC2 jump server
+- AWS Load Balancer Controller
 
 variable: copy and edit `.tfvars` file
 
