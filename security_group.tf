@@ -17,6 +17,8 @@ resource "aws_security_group" "eksClusterSg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+// Security group for Jump server
 resource "aws_security_group" "eksEC2JumpSg" {
   name        = "eksEC2JumpSg"
   description = "allow all traffic"

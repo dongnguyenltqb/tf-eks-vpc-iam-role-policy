@@ -68,6 +68,13 @@ output "oidc" {
 output "eksEC2JumpServerIP" {
   value = aws_instance.eksjump.public_ip
 }
+
+# output "eksEC2JumpServer2IP" {
+#   value = aws_instance.eksjump2.public_ip
+# }
 output "eksEC2JumpServer_ebs_id" {
   value = aws_instance.eksjump.root_block_device.0.volume_id
+}
+output "keypair_name" {
+  value = aws_key_pair.jump_key.key_name
 }
