@@ -1,6 +1,8 @@
 resource "aws_vpc" "tf-vpc" {
-  cidr_block = var.base_cidr_block
-  tags       = merge(local.tags, var.tags)
+  cidr_block           = var.base_cidr_block
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+  tags                 = merge(local.tags, var.tags)
 }
 
 resource "aws_subnet" "tf-1a-public" {

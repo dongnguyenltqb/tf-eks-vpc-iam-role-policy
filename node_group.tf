@@ -1,12 +1,19 @@
-resource "aws_eks_node_group" "t3small" {
+resource "aws_eks_node_group" "group1" {
   cluster_name    = aws_eks_cluster.cluster.name
-  node_group_name = "t3small"
+  node_group_name = "public1A"
   disk_size       = 20
   instance_types  = ["t3.small"]
-  labels          = merge(local.tags, var.tags)
-  tags            = merge(local.tags, var.tags)
-  node_role_arn   = aws_iam_role.eksNodeRole.arn
-  ami_type        = "AL2_x86_64"
+  labels = merge(local.tags, var.tags, {
+    NodeGroup = "public1A"
+  })
+  tags = merge(local.tags, var.tags, {
+    Name = format("%sNodeGroup", var.cluster_name)
+  })
+  tags_all = merge(local.tags, var.tags, {
+    Name = format("%sNodeGroup", var.cluster_name)
+  })
+  node_role_arn = aws_iam_role.eksNodeRole.arn
+  ami_type      = "AL2_x86_64"
   subnet_ids = [
     aws_subnet.tf-1a-public.id
   ]
@@ -16,9 +23,9 @@ resource "aws_eks_node_group" "t3small" {
   }
 
   scaling_config {
-    desired_size = 1
-    max_size     = 2
-    min_size     = 1
+    desired_size = 0
+    max_size     = 1
+    min_size     = 0
   }
 
   update_config {

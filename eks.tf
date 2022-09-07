@@ -1,4 +1,5 @@
 resource "aws_eks_cluster" "cluster" {
+  name = var.cluster_name
   enabled_cluster_log_types = [
     "api",
     "audit",
@@ -6,7 +7,6 @@ resource "aws_eks_cluster" "cluster" {
     "controllerManager",
     "scheduler",
   ]
-  name     = var.cluster_name
   role_arn = aws_iam_role.eksClusterRole.arn
   vpc_config {
     endpoint_private_access = true
@@ -26,6 +26,7 @@ resource "aws_eks_cluster" "cluster" {
       aws_subnet.tf-1c-private.id,
     ]
   }
+  tags = merge(local.tags, var.tags)
 }
 
 resource "aws_security_group" "cluster" {

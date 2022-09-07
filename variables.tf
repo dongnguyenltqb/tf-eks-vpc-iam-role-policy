@@ -4,7 +4,7 @@ variable "aws_region" {
 }
 
 variable "base_cidr_block" {
-  default  = "10.18.0.0/16"
+  default  = "10.1.0.0/16"
   nullable = false
 }
 
