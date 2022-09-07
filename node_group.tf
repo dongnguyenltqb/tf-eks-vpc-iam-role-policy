@@ -3,8 +3,8 @@ resource "aws_eks_node_group" "t3small" {
   node_group_name = "t3small"
   disk_size       = 20
   instance_types  = ["t3.small"]
-  labels          = local.common_tags
-  tags            = local.common_tags
+  labels          = merge(local.tags, var.tags)
+  tags            = merge(local.tags, var.tags)
   node_role_arn   = aws_iam_role.eksNodeRole.arn
   ami_type        = "AL2_x86_64"
   subnet_ids = [
@@ -12,13 +12,13 @@ resource "aws_eks_node_group" "t3small" {
   ]
   remote_access {
     ec2_ssh_key               = aws_key_pair.jump_key.id
-    source_security_group_ids = [aws_security_group.eksEC2JumpSg.id]
+    source_security_group_ids = [aws_security_group.jump.id]
   }
 
   scaling_config {
     desired_size = 1
     max_size     = 2
-    min_size     = 0
+    min_size     = 1
   }
 
   update_config {

@@ -4,11 +4,20 @@ variable "aws_region" {
 }
 
 variable "base_cidr_block" {
-  description = "A /16 CIDR range definition, such as 10.1.0.0/16, that the VPC will use, this vpc will has v^(32-16) =  2^16 IP address"
-  default     = "10.1.0.0/16"
-  nullable    = false
+  default  = "10.18.0.0/16"
+  nullable = false
 }
 
 variable "cluster_name" {
+  type = string
+}
+
+variable "tags" {
+  type = map(any)
+  default = {
+  }
+}
+
+variable "jump_pubkey" {
   type = string
 }

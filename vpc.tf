@@ -1,8 +1,6 @@
 resource "aws_vpc" "tf-vpc" {
   cidr_block = var.base_cidr_block
-  tags = {
-    Name = "tf-vpc"
-  }
+  tags       = merge(local.tags, var.tags)
 }
 
 resource "aws_subnet" "tf-1a-public" {
@@ -10,11 +8,11 @@ resource "aws_subnet" "tf-1a-public" {
   cidr_block              = "10.1.0.0/24"
   availability_zone       = "ap-southeast-1a"
   map_public_ip_on_launch = true
-  tags = {
+  tags = merge(local.tags, var.tags, {
     Name                          = "tf-1a-public"
     "kubernetes.io/role/elb"      = 1
     "kubernetes.io/cluster/basic" = "owned"
-  }
+  })
 }
 
 
@@ -23,11 +21,11 @@ resource "aws_subnet" "tf-1a-private" {
   cidr_block              = "10.1.1.0/24"
   availability_zone       = "ap-southeast-1a"
   map_public_ip_on_launch = false
-  tags = {
+  tags = merge(local.tags, var.tags, {
     Name                              = "tf-1a-private"
     "kubernetes.io/cluster/basic"     = "owned"
     "kubernetes.io/role/internal-elb" = 1
-  }
+  })
 }
 
 
@@ -36,11 +34,11 @@ resource "aws_subnet" "tf-1b-public" {
   cidr_block              = "10.1.2.0/24"
   availability_zone       = "ap-southeast-1b"
   map_public_ip_on_launch = true
-  tags = {
+  tags = merge(local.tags, var.tags, {
     Name                          = "tf-1b-public"
     "kubernetes.io/role/elb"      = 1
     "kubernetes.io/cluster/basic" = "owned"
-  }
+  })
 }
 
 
@@ -49,22 +47,22 @@ resource "aws_subnet" "tf-1b-private" {
   cidr_block              = "10.1.3.0/24"
   availability_zone       = "ap-southeast-1b"
   map_public_ip_on_launch = false
-  tags = {
+  tags = merge(local.tags, var.tags, {
     Name                              = "tf-1b-private"
     "kubernetes.io/cluster/basic"     = "owned"
     "kubernetes.io/role/internal-elb" = 1
-  }
+  })
 }
 resource "aws_subnet" "tf-1c-public" {
   vpc_id                  = aws_vpc.tf-vpc.id
   cidr_block              = "10.1.4.0/24"
   availability_zone       = "ap-southeast-1c"
   map_public_ip_on_launch = true
-  tags = {
+  tags = merge(local.tags, var.tags, {
     Name                          = "tf-1c-public"
     "kubernetes.io/role/elb"      = 1
     "kubernetes.io/cluster/basic" = "owned"
-  }
+  })
 }
 
 
@@ -73,34 +71,34 @@ resource "aws_subnet" "tf-1c-private" {
   cidr_block              = "10.1.5.0/24"
   availability_zone       = "ap-southeast-1c"
   map_public_ip_on_launch = false
-  tags = {
+  tags = merge(local.tags, var.tags, {
     Name                              = "tf-1c-private"
     "kubernetes.io/cluster/basic"     = "owned"
     "kubernetes.io/role/internal-elb" = 1
-  }
+  })
 }
 
 resource "aws_internet_gateway" "tf-igw" {
   vpc_id = aws_vpc.tf-vpc.id
 
-  tags = {
+  tags = merge(local.tags, var.tags, {
     Name = "tf-igw"
-  }
+  })
 }
 
 resource "aws_eip" "tf-nat-ip" {
   vpc = true
-  tags = {
+  tags = merge(local.tags, var.tags, {
     Name = "tf-nat-ip"
-  }
+  })
 }
 
 resource "aws_nat_gateway" "tf-nat-gw" {
   allocation_id = aws_eip.tf-nat-ip.id
   subnet_id     = aws_subnet.tf-1a-public.id
-  tags = {
+  tags = merge(local.tags, var.tags, {
     Name = "tf-nat"
-  }
+  })
   depends_on = [aws_eip.tf-nat-ip]
 
 }
@@ -114,9 +112,9 @@ resource "aws_route_table" "tf-rtb-public" {
     gateway_id = aws_internet_gateway.tf-igw.id
   }
 
-  tags = {
+  tags = merge(local.tags, var.tags, {
     Name = "tf-pub-route"
-  }
+  })
 }
 
 

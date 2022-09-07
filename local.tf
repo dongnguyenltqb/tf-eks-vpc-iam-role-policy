@@ -1,5 +1,6 @@
 locals {
-  common_tags = {
-    Name = "eks-vpc-basic"
+  tags = {
+    Name      = "tf-eks"
+    Component = "EKS"
   }
 }
